@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
+  <title>Frontend Mentor | Age calculator app</title>
+
+  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
+  <style>
+      @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,700;1,400;1,800&display=swap');
+     * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100vw;
+        min-width: 375px;
+        height: 100vh;
+        background-color: #F0F0F0;
+      }
+
+      #container {
+        width: 735px;
+        height: 630px;
+        position: relative;
+        background-color: #fff;
+        font-family: 'Poppins', sans-serif;
+        border-radius: 10px;
+        border-bottom-right-radius: 30%;
+        padding: 50px;
+        transform: scale(.85);
+        
+      }
+
+      @media screen and (min-width:1500px) {
+        #container {
+          transform: scale(1);
+        }
+      }
+
+      @media screen and (max-width:750px) {
+        #container {
+          margin-top: 100px;
+          transform: scale(.55);
+        }
+      }
+
+      .input--titles--section {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        gap: 130px;
+        color: grey;
+      }
+
+      /* Hide Number Arrows */
+
+      /* Chrome, Safari, Edge, Opera */
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      /* Firefox */
+      input[type=number] {
+        -moz-appearance: textfield;
+      }
+
+      input {
+        font-size: 2em;
+        font-weight: 700;
+        width: 150px;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1.5px solid rgba(128, 128, 128, 0.301);
+        outline: none;
+      }
+
+      .error--section {
+        width: 500px;
+        transform: translateY(-40px);
+        display: flex;
+        justify-content: space-around;
+        position: absolute;
+        font-weight: normal;
+        color: red;
+        font-size: .8em;
+      }
+      .errorTxt {
+        color: red;
+      }
+      .error {
+        border:1.5px solid red;
+      }
+
+      input:hover {
+        cursor: pointer;
+      }
+
+      input:focus{
+        outline:#844FF9;
+      }
+
+      .input--titles {
+        font-size: 1.3em;
+      }
+
+      .input--section {
+        margin-top: 35px;
+        display: flex;
+        width: 100%;
+        justify-content: flex-start;
+        gap: 30px;
+        border-bottom: 1.5px solid rgba(128, 128, 128, 0.301);
+        padding-bottom: 40px;
+      }
+
+      button {
+        position: absolute;
+        right: 30px;
+        width: 80px;
+        height: 80px;
+        transform: translateY(-40px);
+        background-color: #844FF9;
+        border-radius: 50%;
+        border: none;
+        transition:  .3s;
+      }
+
+      button:hover {
+        cursor: pointer;
+        background-color: black;
+      }
+
+      .output--section {
+        display: flex;
+        flex-direction: column;
+        margin-top: 50px; 
+      }
+
+      .output {
+        color: hsl(259, 100%, 65%);
+      }
+
+      .result--date {
+        font-style: italic;
+        font-weight: 800;
+        font-size: 5em;
+      }
+  </style>
+</head>
+<body>
+    <div id="container">
+      <div class="input--titles--section">
+        <span class="input--titles">DAY</span>
+        <span class="input--titles">MONTH</span>
+        <span class="input--titles">YEAR</span>
+      </div>
+      <div class="input--section">
+        <input type="number" placeholder="DD" required onKeyPress="if(this.value.length==2) return false;" class="day">
+        <input type="number" placeholder="MM" required onKeyPress="if(this.value.length==2) return false;" class="month">
+        <input type="number" placeholder="YYYY" required onKeyPress="if(this.value.length==4) return false;" class="year">
+      </div>
+      <div class="error--section">
+        <span class="error--message"></span>
+        <span class="error--message"></span>
+        <span class="error--message"></span>
+      </div>
+      <button type="button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="33" height="37" viewBox="0 0 46 44"><g fill="none" stroke="#FFF" stroke-width="2"><path d="M1 22.019C8.333 21.686 23 25.616 23 44M23 44V0M45 22.019C37.667 21.686 23 25.616 23 44"/></g></svg>
+      </button>
+      <div class="output--section">
+          <section class="result--date">
+            <span class="output">- -</span>
+            <span>years</span>
+          </section>
+          <section class="result--date">
+            <span class="output">- -</span>
+            <span>months</span>
+          </section>
+          <section class="result--date">
+            <span class="output">- -</span>
+            <span>days</span>
+          </section>
+      </div>
+    </div>
+    
+</body>
+<script type="text/javascript" src="./CONST.js"></script>
+<script>
+  let dataShown = false
+
+  // Function to give the anniversary date based on birth date and current date
+  const calculateDate = (currentDate,birthDate) => {
+    return Math.abs(currentDate - birthDate)
+  }
+  btn.addEventListener("click",() => {
+    if (dataShown && (birthYear.value == "" || birthMonth.value == "" || birthDay.value == "")) {
+      output.forEach((value) => {
+        value.innerText = "- -"
+      })
+      dataShown = false
+    }
+    if (birthYear.value == "" || birthMonth.value == "" || birthDay.value == "") {
+      birth.forEach((date,i) => {
+        if (date.value == "") {
+          date.classList.add("error")
+        } 
+      })
+
+      dateTitles.forEach((title) => {
+        title.classList.add("errorTxt")
+      })
+    } else {
+      dataShown = true
+      birth.forEach(date => {
+        date.classList.remove("error")
+      })
+
+      dateTitles.forEach((title) => {
+        title.classList.remove("errorTxt")
+      })
+
+      birth.forEach((date,index) => {
+        output[index].innerText = calculateDate(today[index],parseInt(date.value))
+      })
+    }
+  })
+</script>
+</html>
